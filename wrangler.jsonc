@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "resume-assistant",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+
+  // 前端（Vue）构建产物由 Workers Static Assets 托管；/api/* 先进 Worker
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+
+  // wrangler dev / wrangler deploy 前自动构建前端
+  "build": {
+    "command": "npm run build"
+  },
+
+  // 可选：站点默认 AI（Key 用 `npx wrangler secret put AI_API_KEY` 设置，不要写在这里）
+  "vars": {
+    "AI_BASE_URL": "",
+    "AI_MODEL": "",
+    "AI_API_STYLE": "auto"
+  }
+}
